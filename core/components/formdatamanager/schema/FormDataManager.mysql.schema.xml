@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="FormDataManager\Model" baseClass="xPDO\Om\xPDOObject" platform="mysql" defaultEngine="InnoDB" version="3.0">
+    <object class="Forms" table="form_data_manager_forms" extends="xPDO\Om\xPDOSimpleObject">
+        <field key="formName" dbtype="varchar" precision="255" phptype="string" null="false" />
+        <field key="fields" dbtype="varchar" precision="355" phptype="string" null="false" />
+        <field key="handler" dbtype="varchar" precision="255" phptype="string" null="true" />
+    </object>
+</model>

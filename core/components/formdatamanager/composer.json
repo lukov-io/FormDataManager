@@ -1,0 +1,19 @@
+{
+  "name": "lukovio/formdatamanager",
+  "description": "manage form",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "max",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "FormDataManager\\": "src/"
+    }
+  }
+}
