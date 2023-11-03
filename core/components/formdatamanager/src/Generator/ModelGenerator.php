@@ -71,6 +71,7 @@ class ModelGenerator
             }
         }
 
+
         $engine = isset($object['engine']) ? (string) $object['engine'] : $generator->model['defaultEngine'];
         if (!empty($engine)) {
             $generator->map[$class]['tableMeta'] = array('engine' => $engine);

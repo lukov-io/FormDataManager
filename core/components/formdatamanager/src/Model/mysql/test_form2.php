@@ -3,30 +3,24 @@ namespace FormDataManager\Model\mysql;
 
 use xPDO\xPDO;
 
-class data_test extends \FormDataManager\Model\data_test
+class test_form2 extends \FormDataManager\Model\test_form2
 {
 
     public static $metaMap = array (
         'package' => 'FormDataManager',
         'version' => '3.0',
-        'table' => 'data_test',
+        'table' => 'test_form2',
         'tableMeta' => 
         array (
             'engine' => 'InnoDB',
         ),
         'fields' => 
         array (
-            'test1' => NULL,
-            'test2' => NULL,
+            'fsdfsdf' => NULL,
         ),
         'fieldMeta' => 
         array (
-            'test1' => 
-            array (
-                'dbtype' => 'TIMESTAMP',
-                'phptype' => 'date',
-            ),
-            'test2' => 
+            'fsdfsdf' => 
             array (
                 'dbtype' => 'TEXT',
                 'phptype' => 'string',

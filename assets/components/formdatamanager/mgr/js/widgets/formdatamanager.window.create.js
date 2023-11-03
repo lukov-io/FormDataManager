@@ -89,10 +89,8 @@ FormDataManager.window.CreateForm = function(config) {
                 text : _('formdatamanager.addbutton'),
                 handler: function () {
                     let s = config.createWindow;
-                    let count = (s.items.get(0).items.length - 5) / 3;
-                    if (!count) {
-                        count = 1;
-                    }
+                    let count = ((s.items.get(0).items.length - 5) / 3) + 1;
+
 
                     s.items.get(0).add(
                         [
@@ -154,5 +152,9 @@ FormDataManager.window.CreateForm = function(config) {
     });
     FormDataManager.window.CreateForm.superclass.constructor.call(this,config);
 };
-Ext.extend(FormDataManager.window.CreateForm,MODx.Window);
+Ext.extend(FormDataManager.window.CreateForm,MODx.Window, {
+    getField(id) {
+        return this.fields.find(item => item.id === id);
+    }
+});
 Ext.reg('formdatamanager-window-formdatamanager-create',FormDataManager.window.CreateForm);

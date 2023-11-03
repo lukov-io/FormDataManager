@@ -58,10 +58,8 @@ class FormDataManager
     }
 
     public function process() {
-
-
         echo "<pre>";
-
+            var_dump($this->modx->getFieldMeta(Forms::class));
         echo "</pre>";
     }
 

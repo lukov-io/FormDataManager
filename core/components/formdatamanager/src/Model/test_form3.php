@@ -4,13 +4,14 @@ namespace FormDataManager\Model;
 use xPDO\xPDO;
 
 /**
- * Class data_test
+ * Class test_form3
  *
  * @property string $test1
  * @property string $test2
+ * @property  $test3
  *
  * @package FormDataManager\Model
  */
-class data_test extends \xPDO\Om\xPDOSimpleObject
+class test_form3 extends \xPDO\Om\xPDOSimpleObject
 {
 }

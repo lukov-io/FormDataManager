@@ -15,11 +15,10 @@ class FormCreateProcessor extends CreateProcessor
         $generator = $FormDataManager->getGenerator();
         $object = $this->getProperty('form');
 
-        var_dump($object);
         $this->object = $generator->createModelClass($object);
 
         if (!$this->object) {
-            return $this->failure($this->modx->lexicon($this->objectType . '_err_save'));
+            return $this->failure($this->modx->lexicon($this->objectType . '_err_create'));
         }
 
         if (!$this->object->validate()) {

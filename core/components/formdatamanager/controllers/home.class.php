@@ -42,6 +42,7 @@ class FormDataManagerHomeManagerController extends modExtraManagerController
     {
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/formdatamanager.grid.js');
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/formdatamanager.window.create.js');
+        $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/formdatamanager.window.update.js');
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/forms.grid.js');
         $this->addJavascript($this->formmanager->options['jsUrl'] . 'widgets/home.panel.js');
         $this->addLastJavascript($this->formmanager->options['jsUrl'] . 'sections/index.js');

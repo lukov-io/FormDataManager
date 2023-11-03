@@ -4,7 +4,7 @@ FormDataManager.grid.FormDataManager = function(config) {
         id: 'formdatamanager-grid-formdatamanager'
         ,url: FormDataManager.config.connectorUrl
         ,baseParams: { action: 'formslist/getList' }
-        ,fields: ['id','formName']
+        ,fields: ['id','formName', 'fields']
         ,paging: true
         ,remoteSort: true
         ,columns: [{
@@ -17,7 +17,13 @@ FormDataManager.grid.FormDataManager = function(config) {
             ,dataIndex: 'formName'
             ,sortable: true
             ,width: 100
-        }],
+        },{
+            header: 'Fields'
+            ,dataIndex: 'fields'
+            ,sortable: true
+            ,width: 100
+        }
+        ],
         tbar: [
             {
                 text: _('formdatamanager.formdatamanager_create')
@@ -58,17 +64,40 @@ Ext.extend(FormDataManager.grid.FormDataManager,MODx.grid.Grid,{
     },
     update: function(btn,e) {
         e.preventDefault();
-        if (!this.updateFormDataManagerWindow) {
-            this.updateDoodleWindow = MODx.load({
-                xtype: 'formdatamanager-window-formdatamanager-update',
-                record: this.menu.record,
-                listeners: {
-                    'success': {fn:this.refresh,scope:this}
+        let data = this.menu.record;
+        let grid = this;
+
+        MODx.Ajax.request({
+            url: FormDataManager.config.connectorUrl
+            ,params: {
+                action: 'forms/getObject'
+                ,class: this.menu.record.formName
+            }
+            ,listeners: {
+                success: {
+                    fn: function(r) {
+                        data.fieldsMeta = r.object;
+                        if (!grid.updateFormDataManagerWindow) {
+                            grid.updateFormDataManagerWindow = MODx.load({
+                                xtype: 'formdatamanager-window-formdatamanager-update',
+                                data: data,
+                                listeners: {
+                                    'success': {fn:this.refresh,scope:this}
+                                }
+                            });
+                        }
+                        grid.updateFormDataManagerWindow.show(e.target);
+                    }
+                    ,scope: this
                 }
-            });
-        }
-        this.updateFormDataManagerWindow.setValues(this.menu.record);
-        this.updateFormDataManagerWindow.show(e.target);
+                ,failure: {
+                    fn: function(r) {
+                        e.record.reject();
+                    }
+                    ,scope: this
+                }
+            }
+        });
     },
     getMenu: function() {
     return [{
