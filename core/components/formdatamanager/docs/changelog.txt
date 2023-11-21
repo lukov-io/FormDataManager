@@ -1,0 +1,8 @@
+Changelog file for FormDataManager component.
+
+FormDataManager 1.0 beta
+====================================
+- Updating text, ready to build
+- Fixes to FormDataManager class
+- Fixed bugs with build, updated readme
+- Initial commit

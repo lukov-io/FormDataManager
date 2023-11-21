@@ -1,63 +1,76 @@
-FormDataManager.window.CreateForm = function(config) {
+FormDataManager.window.CreateForm = function (config) {
     config = config || {};
-    config.createWindow = this;
-    Ext.applyIf(config,{
-        title: _('formdatamanager.formdatamanager_create')
-        ,url: FormDataManager.config.connectorUrl
-        ,baseParams: {
+    let currentWindow = this;
+    Ext.applyIf(config, {
+        title: _('formdatamanager.formdatamanager_create'),
+        url: FormDataManager.config.connectorUrl,
+        baseParams: {
             action: 'formslist/create'
-        }
-        ,fields: [
+        },
+        fields: [
             {
                 xtype: 'textfield',
                 fieldLabel: _('formdatamanager.formname'),
-                name: 'form[attributes][class]',
-                anchor: '50%',
+                name: 'form[class]',
+                anchor: '100%',
                 regex: /^[a-zA-Z_\x80-\xff][a-zA-Z0-9_ \x80-\xff]*$/,
                 msgTarget: "under",
                 allowBlank: false,
                 invalidText: _('formdatamanager.tablename_regex'),
                 listeners: {
                     'change': {
-                        fn:function (tf ,nv ,ov) {
-                           let tableNameField = Ext.getCmp("formdatamanager-tablename");
+                        fn: function (tf, nv, ov) {
+                            let tableNameField = Ext.getCmp("formdatamanager-tablename");
                             tableNameField.setValue(nv);
                         }
-                        ,scope:this}
+                        , scope: this
+                    }
 
                 }
             },
             {
                 xtype: 'hidden',
                 id: "formdatamanager-tablename",
-                name: 'form[attributes][table]',
-                anchor: '50%',
+                name: 'form[table]',
             },
             {
                 xtype: 'textfield',
-                name: `form[field][0][attributes][key]`,
+                name: `form[fields][]`,
                 fieldLabel: _('formdatamanager.fieldname'),
                 description: _('formdatamanager.fieldname_desc'),
-                anchor: '50%',
-                regex: /[a-zA-z]/,
+                anchor: '45%',
+                regex: /[a-zA-Z]/,
                 msgTarget: "under",
                 invalidText: _('formdatamanager.tablerow_type'),
-                allowBlank: false
+                allowBlank: false,
+                listeners: {
+                    'change': {
+                        fn: function (tf, nv, ov) {
+                            let tableNameField = Ext.getCmp("ddddd");
+                            let tableNameField1 = Ext.getCmp("formdatamanager-phptype-0");
+                            tableNameField.name = `form[fieldmeta][${nv}][dbtype]`;
+                            tableNameField1.name = `form[fieldmeta][${nv}][phptype]`;
+                        }
+                        , scope: this
+                    }
+
+                }
             },
             {
                 xtype: 'combo',
-                name: `form[field][0][attributes][dbtype]`,
+                name: `form[fieldMeta][0][dbtype]`,
+                id: "ddddd",
                 store: ["TINYTEXT", "TEXT", "TIMESTAMP", "INT"],
                 fieldLabel: _('formdatamanager.fieldtype'),
                 description: _('formdatamanager.fieldtype_desc'),
-                anchor: '50%',
+                anchor: '45%',
                 allowBlank: false,
                 regex: /TINYTEXT|TEXT|TIMESTAMP|INT/,
                 msgTarget: "under",
                 invalidText: _('formdatamanager.tablerow_type'),
                 listeners: {
                     'change': {
-                        fn:function (tf ,nv ,ov) {
+                        fn: function (tf, nv, ov) {
                             let tableNameField = Ext.getCmp("formdatamanager-phptype-0");
 
                             switch (nv) {
@@ -65,96 +78,154 @@ FormDataManager.window.CreateForm = function(config) {
                                 case "TEXT":
                                     tableNameField.setValue('string');
                                     break;
-                                case "int":
+                                case "INT":
                                     tableNameField.setValue('integer');
                                     break;
                                 case "TIMESTAMP":
                                     tableNameField.setValue('date');
                             }
                         }
-                        ,scope:this}
+                        , scope: this
+                    }
                 }
-
             },
             {
                 xtype: 'hidden',
                 id: "formdatamanager-phptype-0",
-                name: 'form[field][0][attributes][phptype]',
-                anchor: '50%',
+                name: 'form[fieldMeta][0][phptype]',
             },
         ],
         bbar: [
             {
                 xtype: "button",
-                text : _('formdatamanager.addbutton'),
+                text: _('formdatamanager.addbutton'),
                 handler: function () {
-                    let s = config.createWindow;
-                    let count = ((s.items.get(0).items.length - 5) / 3) + 1;
+                    currentWindow.count = currentWindow.count ?? 1;
+                    let i = currentWindow.count;
 
-
-                    s.items.get(0).add(
+                    currentWindow.items.get(0).add(
                         [
                             {
                                 xtype: 'textfield',
-                                name: `form[field][${count}][attributes][key]`,
+                                name: `form[fields][]`,
                                 fieldLabel: _('formdatamanager.fieldname'),
                                 description: _('formdatamanager.fieldname_desc'),
-                                anchor: '50%',
-                                regex: /[a-zA-z]/,
+                                anchor: '45%',
+                                regex: /[a-zA-Z]/,
                                 msgTarget: "under",
                                 invalidText: _('formdatamanager.tablerow_type'),
                                 allowBlank: false,
+                                listeners: {
+                                    'change': {
+                                        fn: function (tf, nv, ov) {
+                                            let tableNameField = Ext.getCmp("formdatamanager-phptype-" + i);
+                                            let tableNameField1 = Ext.getCmp("formdatamanager-dbtype-" + i);
+                                            tableNameField1.name = `form[fieldmeta][${nv}][dbtype]`;
+                                            tableNameField.name = `form[fieldmeta][${nv}][phptype]`;
+                                        }
+                                        , scope: this
+                                    }
+
+                                }
                             },
                             {
                                 xtype: 'combo',
-                                name: `form[field][${count}][attributes][dbtype]`,
+                                id: "formdatamanager-dbtype-" + i,
+                                name: `form[fieldMeta][${currentWindow.count}][dbtype]`,
                                 store: ["TINYTEXT", "TEXT", "TIMESTAMP", "INT"],
                                 fieldLabel: _('formdatamanager.fieldtype'),
                                 description: _('formdatamanager.fieldtype_desc'),
-                                anchor: '50%',
+                                anchor: '45%',
                                 regex: /TINYTEXT|TEXT|TIMESTAMP|INT/,
                                 msgTarget: "under",
                                 invalidText: _('formdatamanager.tablerow_type'),
                                 allowBlank: false,
                                 listeners: {
                                     'change': {
-                                        fn:function (tf ,nv ,ov) {
-                                            let tableNameField = Ext.getCmp("formdatamanager-phptype-" + count);
-                                            console.log(tableNameField);
+                                        fn: function (tf, nv, ov) {
+                                            let tableNameField = Ext.getCmp("formdatamanager-phptype-" + i);
                                             switch (nv) {
                                                 case "TINYTEXT":
                                                 case "TEXT":
                                                     tableNameField.setValue('string');
                                                     break;
-                                                case "int":
+                                                case "INT":
                                                     tableNameField.setValue('integer');
                                                     break;
                                                 case "TIMESTAMP":
                                                     tableNameField.setValue('date');
                                             }
                                         }
-                                        ,scope:this}
+                                        , scope: this
+                                    }
                                 },
                             },
                             {
                                 xtype: 'hidden',
-                                id: "formdatamanager-phptype-" + count,
-                                name: `form[field][${count}][attributes][phptype]`,
-                                anchor: '50%',
+                                id: "formdatamanager-phptype-" + i,
+                                name: `form[fieldMeta][${currentWindow.count}][phptype]`,
                             }
                         ]
                     )
 
-                    s.doLayout();
+                    currentWindow.count++;
+
+                    currentWindow.doLayout();
                 }
             },
         ],
     });
-    FormDataManager.window.CreateForm.superclass.constructor.call(this,config);
+    FormDataManager.window.CreateForm.superclass.constructor.call(this, config);
+
+    this.on('success', function (a) {
+        let i = Ext.getCmp("formdatamanager-vtabs-forms");
+        let form = a.a.result.object;
+        let fields = ["id"];
+        fields.push(...form.fields.split(','));
+        let columns = [
+            {
+                header: '№',
+                dataIndex: 'id',
+                sortable: true,
+                width: 30
+            }
+        ]
+
+        for (let item of fields) {
+            if (item === "id") {
+                continue;
+            }
+
+            columns.push({
+                header: item,
+                dataIndex: item,
+                sortable: true,
+            });
+        }
+
+        let empty = i.getItem("formdatamanager-emptyforms")
+
+        if (empty) {
+            empty.destroy();
+        }
+
+        i.add({
+            title: form.formName,
+            id: 'formdatamanager-grid-' + form.formName,
+            xtype: 'formdatamanager-grid-forms',
+            baseParams: {
+                action: 'forms/getList',
+                class: form.formName,
+            },
+            fields: fields,
+            columns: columns,
+            cls: 'main-wrapper'
+            , preventRender: true
+        });
+
+        i.setActiveTab('formdatamanager-grid-' + form.formName);
+        i.doLayout();
+    });
 };
-Ext.extend(FormDataManager.window.CreateForm,MODx.Window, {
-    getField(id) {
-        return this.fields.find(item => item.id === id);
-    }
-});
-Ext.reg('formdatamanager-window-formdatamanager-create',FormDataManager.window.CreateForm);
+Ext.extend(FormDataManager.window.CreateForm, MODx.Window);
+Ext.reg('formdatamanager-window-formdatamanager-create', FormDataManager.window.CreateForm);

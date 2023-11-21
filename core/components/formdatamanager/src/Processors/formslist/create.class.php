@@ -15,7 +15,7 @@ class FormCreateProcessor extends CreateProcessor
         $generator = $FormDataManager->getGenerator();
         $object = $this->getProperty('form');
 
-        $this->object = $generator->createModelClass($object);
+        $this->object = $generator->process($object);
 
         if (!$this->object) {
             return $this->failure($this->modx->lexicon($this->objectType . '_err_create'));
@@ -37,7 +37,14 @@ class FormCreateProcessor extends CreateProcessor
         }
 
         $this->logManagerAction();
+        $this->afterSave();
         return $this->cleanup();
+    }
+
+    public function afterSave()
+    {
+        $handlersId = explode(',', $this->modx->getOption("formdatamanager.default_handlers"));
+        $this->object->setHandlers($handlersId);
     }
 }
 

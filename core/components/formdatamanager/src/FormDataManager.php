@@ -3,19 +3,22 @@
 namespace FormDataManager;
 
 use FormDataManager\Generator\ModelGenerator;
+use FormDataManager\Handler\FormHandler;
+use FormDataManager\Handler\Handlers\Mommy;
+use FormDataManager\Handler\Interfaces\HandlerInterface;
 use FormDataManager\Model\Forms;
+use FormDataManager\Model\Handlers;
 use MODX\Revolution\modX;
-use xPDO\Om\xPDOSimpleObject;
+use xPDO\xPDO;
 
 class FormDataManager
 {
     public modX $modx;
     public array $options;
-    private ModelGenerator $generator;
+    public array $classMap;
+    private ?ModelGenerator $generator = null;
+    private ?FormHandler $formHandler = null;
 
-    /**
-     * @throws \ReflectionException
-     */
     public function __construct(modX &$modx, array $config = [])
     {
         $this->modx =& $modx;
@@ -25,7 +28,6 @@ class FormDataManager
         $assetsUrl = $this->modx->getOption('formdatamanager.assets_url',$config,$this->modx->getOption('assets_url').'components/formdatamanager/');
 
         $this->options = array_merge([
-            "classMap" => [],
             'corePath' => $corePath,
             'connectorUrl' => $assetsUrl.'connector.php',
             'modelPath' => $corePath . 'src/Model/',
@@ -40,31 +42,71 @@ class FormDataManager
             'webAssetsUrl' => $assetsUrl . 'web/',
         ], $config);
 
-        $classMap = [
-            str_replace('FormDataManager\Model\\', '', Forms::class) => [
-                "extends" => xPDOSimpleObject::class
-            ]
-        ];
-
-        foreach ($modx->getCollection(Forms::class) as $form) {
-            $className = $form->get("formName");
-            $this->options["classMap"][$className] = explode(',', $form->get("fields"));
-            $classMap[$className] = ["extends" => xPDOSimpleObject::class];
-        }
-
-        $this->generator = new ModelGenerator($modx, $classMap);
-
         $this->modx->lexicon->load('formdatamanager:default');
     }
 
-    public function process() {
-        echo "<pre>";
-            var_dump($this->modx->getFieldMeta(Forms::class));
-        echo "</pre>";
+    public function getFieldsName(): array
+    {
+        $result = [];
+
+        foreach ($this->modx->getCollection(Forms::class) as $form) {
+            $className = $form->get("formName");
+            $result[$className] = explode(',', $form->get("fields"));
+        }
+
+        return $result;
     }
 
     public function getGenerator(): ModelGenerator
     {
+        if (!$this->generator) {
+            $this->generator = new ModelGenerator($this->modx);
+        }
         return $this->generator;
+    }
+
+    public function registerHandler(string $name, string $className): bool
+    {
+        if ($this->modx->getObject(Handlers::class, ['className'=>$className])) {
+            $this->modx->log(xPDO::LOG_LEVEL_ERROR, "Can't registered handler: Handler already exist");
+            return false;
+        }
+
+        if (!class_exists($className)) {
+            $this->modx->log(xPDO::LOG_LEVEL_ERROR, "Can't registered handler: Class not found");
+            return false;
+        }
+
+        $class = new $className($this->modx);
+
+        if (!($class instanceof HandlerInterface)) {
+            $this->modx->log(xPDO::LOG_LEVEL_ERROR, "Can't registered handler: Class not implement HandlerInterface");
+            return false;
+        }
+
+        unset($class);
+
+        $newHandler = $this->modx->newObject(Handlers::class, ['name' => $name, 'className' => $className]);
+
+        if (!$newHandler) {
+            $this->modx->log(xPDO::LOG_LEVEL_ERROR, "Can't registered handler: Error loading handler model");
+        }
+
+        return $newHandler->save();
+    }
+
+    public function removeHandler(string $className) {
+        $object = $this->modx->getObject(Handlers::class, ['className'=>$className]);
+        if ($object) {
+            $object->remove();
+        }
+    }
+
+    public function getHandler(): FormHandler
+    {
+        if (!$this->formHandler) {
+            $this->formHandler = new FormHandler($this->modx);
+        }
+        return $this->formHandler;
     }
 }

@@ -1,4 +1,3 @@
-
 FormDataManager.panel.Home = function(config) {
     config = config || {};
 
@@ -6,41 +5,76 @@ FormDataManager.panel.Home = function(config) {
         border: false
         ,baseCls: 'modx-formpanel'
         ,cls: 'container'
-        ,items: [{
-            html: '<h2>Form data manager</h2>'
-            ,border: false
-            ,cls: 'modx-page-header'
-        },{
-            xtype: 'modx-tabs'
-            ,defaults: { border: false ,autoHeight: true }
-            ,border: true
-            ,items: [
+        ,items: [
             {
-                title: 'Forms'
-                ,defaults: { autoHeight: true }
+                html: '<h2>Form data manager</h2>'
+                ,border: false
+                ,cls: 'modx-page-header'
+            },
+            {
+                xtype: 'modx-tabs'
+                ,defaults: { border: false ,autoHeight: true }
+                ,border: true
                 ,items: [
-                {
-                    xtype: 'modx-vtabs',
-                    items: this.getForms(),
-                }
+                    {
+                        title: 'Forms'
+                        ,defaults: { autoHeight: true }
+                        ,items: [
+                            {
+                                xtype: 'modx-vtabs',
+                                id: "formdatamanager-vtabs-forms",
+                                items: this.getForms(),
+                            }
+                        ]
+                    },
+                    {
+                        title: 'Forms list'
+                        ,defaults: { autoHeight: true }
+                        ,items: [
+                            {
+                                xtype: 'formdatamanager-grid-formdatamanager'
+                                ,cls: 'main-wrapper'
+                                ,preventRender: true
+                            }
+                        ]
+                    },
+                    {
+                        title: _('formdatamanager.settings')
+                        ,defaults: { autoHeight: true }
+                        ,items: [
+                            {
+                                xtype: 'modx-vtabs',
+                                items: [
+                                    {
+                                        title: _('formdatamanager.general_settings'),
+                                        xtype: 'formdatamanager-panel-settings'
+                                        ,cls: 'main-wrapper'
+                                        ,preventRender: true
+                                    },
+                                    /*{
+                                        title: _('formdatamanager.email_settings'),
+                                        xtype: 'crfplugin-panel-message'
+                                        ,cls: 'main-wrapper'
+                                        ,preventRender: true
+                                    },*/
+                                    {
+                                        title: _('formdatamanager.tg_settings'),
+                                        xtype: 'formdatamanager-panel-settings-tg'
+                                        ,cls: 'main-wrapper'
+                                        ,preventRender: true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 ]
-            },
-            {
-                title: 'Forms list'
-                ,defaults: { autoHeight: true }
-                ,items: [{
-                    xtype: 'formdatamanager-grid-formdatamanager'
-                    ,cls: 'main-wrapper'
-                    ,preventRender: true
-                }]
-            },
-            ]
-            ,listeners: {
-                'afterrender': function(tabPanel) {
-                    tabPanel.doLayout();
+                ,listeners: {
+                    'afterrender': function(tabPanel) {
+                        tabPanel.doLayout();
+                    }
                 }
             }
-        }]
+        ]
     });
     FormDataManager.panel.Home.superclass.constructor.call(this,config);
 };
@@ -51,9 +85,10 @@ Ext.extend(FormDataManager.panel.Home, MODx.Panel, {
         if (Array.isArray(FormDataManager.config.classMap)) {
             output.push({
                 title: "forms",
-                html: '<h3>There are no forms. you can create them in the tab "Forms list"</h3>'
-                ,border: false
-                ,cls: 'modx-page-header'
+                id: "formdatamanager-emptyforms",
+                html: '<h3>There are no forms. you can create them in the tab "Forms list"</h3>',
+                border: false,
+                cls: 'modx-page-header'
             });
             return output;
         }
@@ -89,7 +124,7 @@ Ext.extend(FormDataManager.panel.Home, MODx.Panel, {
             }
         ]
 
-        for (let i of FormDataManager.config.classMap[className] ) {
+        for (let i of FormDataManager.config.classMap[className]) {
             output.push({
                 header: i,
                 dataIndex: i,

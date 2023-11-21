@@ -3,13 +3,13 @@ namespace FormDataManager\Model\mysql;
 
 use xPDO\xPDO;
 
-class Forms extends \FormDataManager\Model\Forms
+class Handlers extends \FormDataManager\Model\Handlers
 {
 
     public static $metaMap = array (
         'package' => 'FormDataManager\\Model',
         'version' => '3.0',
-        'table' => 'form_data_manager_forms',
+        'table' => 'form_data_manager_handlers',
         'extends' => 'xPDO\\Om\\xPDOSimpleObject',
         'tableMeta' => 
         array (
@@ -17,19 +17,19 @@ class Forms extends \FormDataManager\Model\Forms
         ),
         'fields' => 
         array (
-            'formName' => NULL,
-            'fields' => NULL,
+            'name' => NULL,
+            'className' => NULL,
         ),
         'fieldMeta' => 
         array (
-            'formName' => 
+            'name' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '255',
                 'phptype' => 'string',
                 'null' => false,
             ),
-            'fields' => 
+            'className' => 
             array (
                 'dbtype' => 'varchar',
                 'precision' => '355',
@@ -43,7 +43,7 @@ class Forms extends \FormDataManager\Model\Forms
             array (
                 'class' => 'FormDataManager\\Model\\FormsHandlers',
                 'local' => 'id',
-                'foreign' => 'form',
+                'foreign' => 'handler',
                 'cardinality' => 'many',
                 'owner' => 'local',
             ),

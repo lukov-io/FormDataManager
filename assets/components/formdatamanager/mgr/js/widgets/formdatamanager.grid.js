@@ -1,27 +1,27 @@
 FormDataManager.grid.FormDataManager = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'formdatamanager-grid-formdatamanager'
-        ,url: FormDataManager.config.connectorUrl
-        ,baseParams: { action: 'formslist/getList' }
-        ,fields: ['id','formName', 'fields']
-        ,paging: true
-        ,remoteSort: true
-        ,columns: [{
-            header: '№'
-            ,dataIndex: 'id'
-            ,sortable: true
-            ,width: 30
+        id: 'formdatamanager-grid-formdatamanager',
+        url: FormDataManager.config.connectorUrl,
+        baseParams: { action: 'formslist/getList' },
+        fields: ['id','formName', 'fields'],
+        paging: true,
+        remoteSort: true,
+        columns: [{
+            header: '№',
+            dataIndex: 'id',
+            sortable: true,
+            width: 30
         },{
-            header: 'Form name'
-            ,dataIndex: 'formName'
-            ,sortable: true
-            ,width: 100
+            header: 'Form name',
+            dataIndex: 'formName',
+            sortable: true,
+            width: 100
         },{
-            header: 'Fields'
-            ,dataIndex: 'fields'
-            ,sortable: true
-            ,width: 100
+            header: 'Fields',
+            dataIndex: 'fields',
+            sortable: true,
+            width: 100
         }
         ],
         tbar: [
@@ -48,17 +48,33 @@ Ext.extend(FormDataManager.grid.FormDataManager,MODx.grid.Grid,{
         s.baseParams.query = JSON.stringify(this.dateData);
         this.getBottomToolbar().changePage(1);
     },
-    remove: function() {
+    removeForm: function() {
         MODx.msg.confirm({
-            title: _('formdatamanager.formdatamanager_remove')
-            , text: _('formdatamanager.formdatamanager_remove_confirm')
-            , url: this.config.url
-            , params: {
-                action: 'formslist/remove'
-                , id: this.menu.record.id
-            }
-            , listeners: {
-                'success': {fn: this.refresh, scope: this}
+            title: _('formdatamanager.formdatamanager_remove'),
+            text: _('formdatamanager.formdatamanager_remove_confirm'),
+            url: this.config.url,
+            params: {
+                action: 'formslist/remove',
+                id: this.menu.record.id
+            },
+            listeners: {
+                'success': {
+                    fn: () => {
+                        let i = Ext.getCmp("formdatamanager-vtabs-forms");
+                        if (i.items.getCount() <= 1) {
+                            i.add({
+                                title: "forms",
+                                id: "formdatamanager-emptyforms",
+                                html: '<h3>There are no forms. you can create them in the tab "Forms list"</h3>',
+                                border: false,
+                                cls: 'modx-page-header'
+                            });
+                        }
+                        i.remove('formdatamanager-grid-' + this.menu.record.formName);
+                        this.refresh();
+                    },
+                    scope: this
+                }
             }
         })
     },
@@ -68,45 +84,55 @@ Ext.extend(FormDataManager.grid.FormDataManager,MODx.grid.Grid,{
         let grid = this;
 
         MODx.Ajax.request({
-            url: FormDataManager.config.connectorUrl
-            ,params: {
-                action: 'forms/getObject'
-                ,class: this.menu.record.formName
-            }
-            ,listeners: {
+            url: FormDataManager.config.connectorUrl,
+            params: {
+                action: 'forms/getObject',
+                id: this.menu.record.id
+            },
+            listeners: {
                 success: {
                     fn: function(r) {
-                        data.fieldsMeta = r.object;
-                        if (!grid.updateFormDataManagerWindow) {
-                            grid.updateFormDataManagerWindow = MODx.load({
-                                xtype: 'formdatamanager-window-formdatamanager-update',
-                                data: data,
-                                listeners: {
-                                    'success': {fn:this.refresh,scope:this}
+                        data.handlers = r.object;
+
+                        let updateFormDataManagerWindow = MODx.load({
+                            xtype: 'formdatamanager-window-formdatamanager-update',
+                            data: data,
+                            listeners: {
+                                'success': {
+                                    fn:(e)=> {
+                                        this.refresh();
+                                        updateFormDataManagerWindow.destroy();
+                                        updateFormDataManagerWindow = undefined;
+                                    },
+                                    scope:this
                                 }
-                            });
-                        }
-                        grid.updateFormDataManagerWindow.show(e.target);
-                    }
-                    ,scope: this
-                }
-                ,failure: {
+                            }
+                        });
+
+                        updateFormDataManagerWindow.show(e.target);
+                    },
+                    scope: this
+                },
+                failure: {
                     fn: function(r) {
                         e.record.reject();
-                    }
-                    ,scope: this
+                    },
+                    scope: this
                 }
             }
         });
     },
     getMenu: function() {
-    return [{
-            text: _('formdatamanager.formdatamanager_update')
-            ,handler: this.update
-        },'-',{
-            text: _('formdatamanager.formdatamanager_remove')
-            ,handler: this.remove
-        }];
+    return [
+        {
+            text: _('formdatamanager.formdatamanager_update'),
+            handler: this.update
+        },
+        {
+            text: _('formdatamanager.formdatamanager_remove'),
+            handler: this.removeForm
+        }
+    ];
 }
 });
 Ext.reg('formdatamanager-grid-formdatamanager',FormDataManager.grid.FormDataManager);

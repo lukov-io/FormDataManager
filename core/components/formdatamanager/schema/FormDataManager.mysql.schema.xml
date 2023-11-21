@@ -3,6 +3,17 @@
     <object class="Forms" table="form_data_manager_forms" extends="xPDO\Om\xPDOSimpleObject">
         <field key="formName" dbtype="varchar" precision="255" phptype="string" null="false" />
         <field key="fields" dbtype="varchar" precision="355" phptype="string" null="false" />
-        <field key="handler" dbtype="varchar" precision="255" phptype="string" null="true" />
+        <composite alias="FormsHandlers" class="FormDataManager\Model\FormsHandlers" local="id" foreign="form" cardinality="many" owner="local" />
+    </object>
+    <object class="Handlers" table="form_data_manager_handlers" extends="xPDO\Om\xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" />
+        <field key="className" dbtype="varchar" precision="355" phptype="string" null="false" />
+        <composite alias="FormsHandlers" class="FormDataManager\Model\FormsHandlers" local="id" foreign="handler" cardinality="many" owner="local" />
+    </object>
+    <object class="FormsHandlers" table="form_data_manager_links" extends="xPDO\Om\xPDOSimpleObject">
+        <field key="form" dbtype="int" precision="11" phptype="integer" null="false" />
+        <field key="handler" dbtype="int" precision="11" phptype="integer" null="false" />
+        <aggregate alias="Handlers" class="FormDataManager\Model\Handlers" local="handler" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Forms" class="FormDataManager\Model\Forms" local="form" foreign="id" cardinality="one" owner="foreign" />
     </object>
 </model>

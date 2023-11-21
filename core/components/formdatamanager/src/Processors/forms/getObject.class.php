@@ -1,24 +1,39 @@
 <?php
 
-use MODX\Revolution\Processors\ModelProcessor;
+use FormDataManager\Model\Forms;
+use FormDataManager\Model\Handlers;
+use MODX\Revolution\Processors\Model\GetProcessor;
 
-class getFormMetaProcessor extends ModelProcessor {
-    const NAMESPACE = "FormDataManager\\Model\\";
-    public $classKey = '';
+class getHandlersProcessor extends GetProcessor {
+    public $classKey = Forms::class;
 
-    public function initialize(): bool
+    public function cleanup()
     {
-        $this->classKey = self::NAMESPACE . $this->getProperty('class');
-
-
-        return parent::initialize();
+        return $this->success('', $this->object);
     }
 
-    public function process()
+    /**
+     * Used for adding custom data in derivative types
+     *
+     * @return void
+     */
+    public function beforeOutput()
     {
-        $meta = $this->modx->getFieldMeta($this->classKey);
+        $handlers = [];
+        $currentHandlersId = [];
 
-        return $this->success('', $meta);
+        foreach ($this->object->getMany("FormsHandlers") as $link) {
+            $currentHandlersId[] = $link->get('handler');
+        }
+
+        foreach ($this->modx->getCollection(Handlers::class) as $handler) {
+            $i = $handler->toArray();
+            $i['isActive'] = in_array($i['id'], $currentHandlersId);
+            $handlers[] = $i;
+        }
+
+        $this->object = $handlers;
+
     }
 }
-return 'getFormMetaProcessor';
+return 'getHandlersProcessor';

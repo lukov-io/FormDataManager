@@ -20,5 +20,9 @@ if (!file_exists($sources['schema_file'])) { $modx->log(xPDO::LOG_LEVEL_ERROR,'S
 $generator->parseSchema($sources['schema_file'],$sources['model'], ['namespacePrefix' => 'FormDataManager']);
 
 
-$manager->createObjectContainer('FormDataManager\Model\Forms'); // created the database table
+$manager->createObjectContainer('FormDataManager\Model\Forms');
+$manager->createObjectContainer('FormDataManager\Model\Handlers');
+$manager->createObjectContainer('FormDataManager\Model\FormsHandlers');
+
+
 $modx->log(modX::LOG_LEVEL_INFO, 'Done!');

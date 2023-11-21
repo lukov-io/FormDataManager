@@ -3,26 +3,33 @@
 use FormDataManager\Model\Forms;
 use MODX\Revolution\Processors\Model\UpdateProcessor;
 
-class DoodleUpdateProcessor extends UpdateProcessor {
+class UpdateFormHandlersProcessor extends UpdateProcessor {
     public $classKey = Forms::class;
-    public $languageTopics = array('formdatamanager:default');
-    public $objectType = 'formdatamanager.formdatamanager';
+    private array $handlersId;
 
-    public function beforeSet()
+    public function cleanup()
     {
-        $newMeta = $this->getProperty("form");
+        return $this->success('', $this->object);
+    }
 
-        $classname = 'FormDataManager\Model\\' . $newMeta["class"];
+    public function beforeSet(): bool
+    {
+        $value = $this->getProperty("value");
+        if (is_array($value)) {
+            $value = array_keys($value);
+        } else {
+            $value = [];
+        }
 
+        $this->handlersId = $value;
+        $this->unsetProperty("value");
 
-        $newMeta = $this->getProperty("form");
-        $currentMeta = $this->modx->getFieldMeta('FormDataManager\Model\\' . $newMeta["class"]);
-        $newMeta = $this->getProperty("form");
-        $newMeta = $newMeta['fieldMeta'];
-
-        var_dump($currentMeta);
-        var_dump($newMeta);
         return parent::beforeSet();
     }
+
+    public function afterSave()
+    {
+        $this->object->setHandlers($this->handlersId);
+    }
 }
-return 'DoodleUpdateProcessor';
+return 'UpdateFormHandlersProcessor';

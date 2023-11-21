@@ -1,6 +1,11 @@
 <?php
 $_lang['formdatamanager.desc'] = 'Manage your requests here.';
 $_lang['formdatamanager.description'] = 'Description';
+$_lang['formdatamanager.settings'] = 'Settings';
+$_lang['formdatamanager.general_settings'] = 'General settings';
+$_lang['formdatamanager.general_description'] = 'Set this handler to all form';
+$_lang['formdatamanager.email_settings'] = 'Email';
+$_lang['formdatamanager.tg_settings'] = 'Telegram';
 $_lang['formdatamanager.formdatamanager_err_nf'] = 'formdatamanager not found.';
 $_lang['formdatamanager.formdatamanager_err_ns'] = 'formdatamanager not specified.';
 $_lang['formdatamanager.formdatamanager_err_ns_name'] = 'Please specify a name for the formdatamanager.';
@@ -8,7 +13,7 @@ $_lang['formdatamanager.formdatamanager_err_remove'] = 'An error occurred while 
 $_lang['formdatamanager.formdatamanager_err_save'] = 'An error occurred while trying to save the form.';
 $_lang['formdatamanager.formdatamanager_err_create'] = 'Can`t create model.';
 $_lang['formdatamanager.formdatamanager_create'] = 'Create new form';
-$_lang['formdatamanager.formdatamanager_update'] = 'Update form';
+$_lang['formdatamanager.formdatamanager_update'] = 'Set handlers';
 $_lang['formdatamanager.formdatamanager_remove'] = 'Delete form';
 $_lang['formdatamanager.remove_field'] = 'Delete field';
 $_lang['formdatamanager.formdatamanager_remove_confirm'] = 'Attention! Removing the mold will result in the loss of melons.\n Are you sure you want to delete this form?';
