@@ -108,7 +108,7 @@ if ($object->xpdo) {
         case xPDOTransport::ACTION_INSTALL:
             $modx =& $object->xpdo;
             $modelPath = $modx->getOption('formdatamanager.core_path',null,$modx->getOption('core_path').'components/formdatamanager/').'src/';
-            $modx->addPackage('FormDataManager',$modelPath, null, 'FormDataManager\\');
+            $modx->addPackage('FormDataManager\Model',$modelPath, null, 'FormDataManager\\');
 
             $manager = $modx->getManager();
 
@@ -116,9 +116,10 @@ if ($object->xpdo) {
             $manager->createObjectContainer('FormDataManager\Model\FormsHandlers');
             $manager->createObjectContainer('FormDataManager\Model\Handlers');
 
-            $newHandlerTg = $this->modx->newObject('FormDataManager\Model\Handlers', ['name' => "Telegram", 'className' => "FormDataManager\Handler\Handlers\Telegram"]);
+            $newHandlerTg = $modx->newObject('FormDataManager\Model\Handlers', ['name' => "Telegram", 'className' => "FormDataManager\Handler\Handlers\Telegram"]);
             $newHandlerTg->save();
-            $newHandlerEmail = $this->modx->newObject('FormDataManager\Model\Handlers', ['name' => "Email", 'className' => "FormDataManager\Handler\Handlers\Email"]);
+            $newHandlerEmail = $modx->newObject('FormDataManager\Model\Handlers', ['name' => "Email", 'className' => "FormDataManager\Handler\Handlers\Email"]);
+            $newHandlerEmail->save();
 
             break;
         case xPDOTransport::ACTION_UPGRADE:

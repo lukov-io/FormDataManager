@@ -36,7 +36,7 @@ require_once MODX_CORE_PATH . "vendor/autoload.php";
 
 $modx= new modX();
 $modx->initialize('mgr');
-echo ''; /* used for nice formatting of log messages */
+echo '<pre>'; /* used for nice formatting of log messages */
 $modx->setLogLevel(xPDO::LOG_LEVEL_INFO);
 $modx->setLogTarget('ECHO');
 
@@ -149,7 +149,7 @@ $tend= explode(" ", microtime());
 $tend= $tend[1] . $tend[0];
 $totalTime= sprintf("%2.4f s",($tend - $tstart));
 $modx->log(xPDO::LOG_LEVEL_INFO,"\n<br />Package Built.<br />\nExecution time: {$totalTime}\n");
-
+echo '</pre>';
 
 session_write_close();
 exit ();

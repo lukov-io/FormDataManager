@@ -11,7 +11,4 @@ $menu->fromArray(array(
     'params' => '',
     'handler' => '',
 ),'',true,true);
-$menu->addOne($action);
-unset($menus);
-
 return $menu;
