@@ -1,8 +1,8 @@
 <?php
 
-namespace FormDataManager\Handler\Handlers;
+namespace FormDataManager\Handlers;
 
-use FormDataManager\Handler\Interfaces\HandlerInterface;
+use FormDataManager\Interfaces\HandlerInterface;
 use MODX\Revolution\modX;
 use xPDO\Om\xPDOSimpleObject;
 use xPDO\xPDO;
@@ -25,7 +25,7 @@ class Telegram implements HandlerInterface
     static function getChatId(modX $modX) {
         return explode(",", $modX->getOption('formdatamanager.chat_id'));
     }
-    public function run(xPDOSimpleObject $object): void
+    public function run(xPDOSimpleObject $object): bool
     {
         $formData = '';
 
@@ -33,8 +33,7 @@ class Telegram implements HandlerInterface
             $formData .= "$item: $value\n";
         }
 
-        $this->sendMessage($formData, self::getChatId($this->modx));
-
+        return !$this->sendMessage($formData, self::getChatId($this->modx));
     }
 
     public function sendMessage ($messageData, array $to): int

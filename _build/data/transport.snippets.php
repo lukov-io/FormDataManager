@@ -11,9 +11,9 @@ $snippets = array();
 $snippet = $modx->newObject('modSnippet');
 $snippet->fromArray(array(
     'id' => 1,
-    'name' => 'send-undelivered-alerts',
+    'name' => 'send-undelivered-requests',
     'description' => 'Displays a list of Doodles.',
-    'snippet' => getContent($sources['elements'].'snippets/send-undelivered-alerts.php'),
+    'snippet' => getContent($sources['elements'].'/snippets/send-undelivered-requests.php'),
 ),'',true,true);
 $snippet->setProperties([]);
 $snippets[] = $snippet;

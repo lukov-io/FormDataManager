@@ -1,12 +1,11 @@
 <?php
 
-namespace FormDataManager\Handler\Handlers;
+namespace FormDataManager\Handlers;
 
-use FormDataManager\Handler\Interfaces\HandlerInterface;
+use FormDataManager\Interfaces\HandlerInterface;
 use MODX\Revolution\Mail\modMail;
 use MODX\Revolution\Mail\modPHPMailer;
 use MODX\Revolution\modX;
-use PHPMailer\PHPMailer\SMTP;
 use xPDO\Om\xPDOSimpleObject;
 use xPDO\xPDO;
 
@@ -21,7 +20,7 @@ class Email implements HandlerInterface
         $this->modx = $modX;
     }
 
-    public function run(xPDOSimpleObject $object): void
+    public function run(xPDOSimpleObject $object): bool
     {
         $chunk = $this->modx->getObject('modChunk',array('name' => 'templaterequest'));
 
@@ -51,5 +50,6 @@ class Email implements HandlerInterface
         }
 
         $this->mailer->reset();
+        return true;
     }
 }

@@ -2,12 +2,11 @@
 
 namespace FormDataManager;
 
-use FormDataManager\Generator\ModelGenerator;
-use FormDataManager\Handler\FormHandler;
-use FormDataManager\Handler\Handlers\Mommy;
-use FormDataManager\Handler\Interfaces\HandlerInterface;
+use FormDataManager\Interfaces\HandlerInterface;
 use FormDataManager\Model\Forms;
 use FormDataManager\Model\Handlers;
+use FormDataManager\Services\FormHandler;
+use FormDataManager\Services\ModelGenerator;
 use MODX\Revolution\modX;
 use xPDO\xPDO;
 
@@ -93,6 +92,11 @@ class FormDataManager
         }
 
         return $newHandler->save();
+    }
+
+    public function test() {
+        $chunk = $this->modx->getObject('modChunk',array('name' => 'name'));
+        return $chunk->process(['data'=> "<h2 class='vvv'>1111111</h2>"]);
     }
 
     public function removeHandler(string $className) {

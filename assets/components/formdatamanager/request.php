@@ -15,4 +15,4 @@ if (!$FormDataManager) {
 }
 
 $handler = $FormDataManager->getHandler();
-echo $handler->process();
+echo $handler->saveRequest();

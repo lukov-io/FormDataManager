@@ -11,8 +11,8 @@ set_time_limit(0);
 /* define package names */
 define('PKG_NAME','FormDataManager');
 define('PKG_NAME_LOWER','formdatamanager');
-define('PKG_VERSION','1.0.0');
-define('PKG_RELEASE','isclegal-dev-product');
+define('PKG_VERSION','1.0.1');
+define('PKG_RELEASE','isclegal-dev');
 
 /* define build paths */
 $root = dirname(__FILE__, 2).'/';
@@ -55,10 +55,10 @@ if (empty($plugin)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in plugi
 $category->addMany($plugins);*/
 
 /* add chunks */
-/*$modx->log(modX::LOG_LEVEL_INFO,'Packaging in chunks...');
+$modx->log(modX::LOG_LEVEL_INFO,'Packaging in chunks...');
 $snippets = include $sources['data'].'transport.snippets.php';
 if (empty($snippets)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in snippets.');
-$category->addMany($snippets);*/
+$category->addMany($snippets);
 
 /* create category vehicle */
 $attr = array(
@@ -77,11 +77,11 @@ $attr = array(
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => array('pluginid', 'event'),
         ),*/
-        /*'Snippets' => array(
+        'Snippets' => array(
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
-        ),*/
+        ),
     ),
 );
 $vehicle = $builder->createVehicle($category,$attr);
@@ -139,6 +139,9 @@ $builder->setPackageAttributes(array(
     'license' => file_get_contents($sources['docs'] . 'license.txt'),
     'readme' => file_get_contents($sources['docs'] . 'readme.txt'),
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
+    'requires' => array(
+        'CronManager' => '>=1.2.0',
+    )
 ));
 
 /* zip up package */

@@ -14,6 +14,11 @@ class FormsGetListProcessor extends GetListProcessor {
         return parent::initialize();
     }
 
+    public function afterIteration(array $list): array
+    {
+        $this->prepareOutputStatus($list);
+        return $list;
+    }
 
     /**
      * @throws Exception
@@ -28,12 +33,12 @@ class FormsGetListProcessor extends GetListProcessor {
 
             if (isset($query->from)) {
                 $dateStart = new DateTime($query->from);
-                $queryArg['date:>='] = $dateStart->format("Y-m-d H:i:s");
+                $queryArg['createdAt:>='] = $dateStart->format("Y-m-d H:i:s");
             }
 
             if (isset($query->to)) {
                 $dateTo = new DateTime($query->to);
-                $queryArg['date:<='] = $dateTo->format("Y-m-d H:i:s");
+                $queryArg['createdAt:<='] = $dateTo->format("Y-m-d H:i:s");
             }
             $c->where($queryArg);
         }
@@ -47,11 +52,9 @@ class FormsGetListProcessor extends GetListProcessor {
 
         for ($i = 0; $i < $count; $i++) {
             if ($array[$i]["status"] === 0) {
-                $array[$i]["status"] = "Доставлено";
-            } elseif ($array[$i]["status"] === 1) {
-                $array[$i]["status"] = "Не доставлено: ошибка подключения";
+                $array[$i]["status"] = "Not delivered!";
             } else {
-                $array[$i]["status"] = "Не доставлено: ошибка доставки";
+                $array[$i]["status"] = "Delivered";
             }
         }
     }

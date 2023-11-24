@@ -95,7 +95,7 @@ Ext.extend(FormDataManager.panel.Home, MODx.Panel, {
 
         for (let i in FormDataManager.config.classMap) {
             let fields = ["id"];
-            fields.push(...FormDataManager.config.classMap[i]);
+            fields.push(...FormDataManager.config.classMap[i],'createdAt', 'status');
 
             output.push({
                 title: i,
@@ -131,6 +131,20 @@ Ext.extend(FormDataManager.panel.Home, MODx.Panel, {
                 sortable: true,
             });
         }
+
+        output.push(
+            {
+                header: _('formdatamanager.created_at'),
+                dataIndex: 'createdAt',
+                sortable: true,
+            },
+            {
+                header: _('formdatamanager.status'),
+                dataIndex: 'status',
+                sortable: true,
+                width: 30
+            },
+        );
 
         return output;
     }

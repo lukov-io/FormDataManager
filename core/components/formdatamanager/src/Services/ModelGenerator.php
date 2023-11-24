@@ -1,6 +1,6 @@
 <?php
 
-namespace FormDataManager\Generator;
+namespace FormDataManager\Services;
 
 use FormDataManager\Model\Forms;
 use MODX\Revolution\modX;
@@ -64,15 +64,63 @@ class ModelGenerator
 
         $newModel->set('formName', $class);
         $extends = $generator->model['baseClass'];
-        $generator->classes[$class] = array('extends' => $extends);
-        $generator->map[$class] = array(
+        $generator->classes[$class] = ['extends' => $extends];
+        $generator->map[$class] = [
             'package' => $generator->model['package'],
             'version' => $generator->model['version'],
             'table' => $object['table'],
             'tableMeta' => [
                 'engine' => $generator->model['defaultEngine']
             ]
-        );
+        ];
+        $generator->map[$class]['fields'] = [
+            'createdAt' => NULL,
+            'status' => NULL,
+        ];
+        $generator->map[$class]['fieldMeta'] = [
+            'createdAt' => [
+                'dbtype' => 'timestamp',
+                'phptype' => 'date',
+                'null' => true,
+                'attributes' => 'DEFAULT CURRENT_TIMESTAMP',
+            ],
+            'status' => [
+                'dbtype' => 'int',
+                'precision' => '1',
+                'phptype' => 'integer',
+                'null' => true,
+                'attributes' => 'DEFAULT \'0\'',
+            ],
+        ];
+
+        $generator->map[$class]['indexes'] = [
+            'createdAt' => [
+                'alias' => 'createdAt',
+                'primary' => false,
+                'unique' => false,
+                'type' => 'BTREE',
+                'columns' => [
+                    'createdAt' => [
+                        'length' => '',
+                        'collation' => 'A',
+                        'null' => true,
+                    ],
+                ],
+            ],
+            'status' => [
+                'alias' => 'status',
+                'primary' => false,
+                'unique' => false,
+                'type' => 'BTREE',
+                'columns' => [
+                    'status' => [
+                        'length' => '',
+                        'collation' => 'A',
+                        'null' => true,
+                    ],
+                ],
+            ],
+        ];
 
         foreach ($object["fields"] as $key=>$field) {
             $modelFields[] = $field;
