@@ -10,7 +10,7 @@ class FormRemoveProcessor extends RemoveProcessor
 
     public function afterRemove()
     {
-        $className = $this->object->get('formName');
+        $className = str_replace(' ', '_', $this->object->get('formName'));
         $modelPath = $this->modx->formdatamanager->options['modelPath'];
 
         $manager = $this->modx->getManager();

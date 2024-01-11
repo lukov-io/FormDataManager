@@ -12,11 +12,10 @@ $snippet = $modx->newObject('modSnippet');
 $snippet->fromArray(array(
     'id' => 1,
     'name' => 'send-undelivered-requests',
-    'description' => 'Displays a list of Doodles.',
+    'description' => 'sends undeliverable applications',
     'snippet' => getContent($sources['elements'].'/snippets/send-undelivered-requests.php'),
 ),'',true,true);
 $snippet->setProperties([]);
 $snippets[] = $snippet;
-unset($properties);
 
 return $snippets;

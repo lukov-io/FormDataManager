@@ -116,10 +116,17 @@ if ($object->xpdo) {
             $manager->createObjectContainer('FormDataManager\Model\FormsHandlers');
             $manager->createObjectContainer('FormDataManager\Model\Handlers');
 
-            $newHandlerTg = $modx->newObject('FormDataManager\Model\Handlers', ['name' => "Telegram", 'className' => "FormDataManager\Handler\Handlers\Telegram"]);
-            $newHandlerTg->save();
-            $newHandlerEmail = $modx->newObject('FormDataManager\Model\Handlers', ['name' => "Email", 'className' => "FormDataManager\Handler\Handlers\Email"]);
-            $newHandlerEmail->save();
+            $tgHangler = $modx->getObject('FormDataManager\Model\Handlers', ['name' => "Telegram"]);
+            if (!$tgHangler) {
+                $newHandlerTg = $modx->newObject('FormDataManager\Model\Handlers', ['name' => "Telegram", 'className' => "FormDataManager\Handlers\Telegram"]);
+                $newHandlerTg->save();
+            }
+
+            $emailHangler = $modx->getObject('FormDataManager\Model\Handlers', ['name' => "Telegram"]);
+            if (!$emailHangler) {
+                $newHandlerEmail = $modx->newObject('FormDataManager\Model\Handlers', ['name' => "Email", 'className' => "FormDataManager\Handlers\Email"]);
+                $newHandlerEmail->save();
+            }
 
             break;
         case xPDOTransport::ACTION_UPGRADE:

@@ -9,7 +9,9 @@ class FormsGetListProcessor extends GetListProcessor {
 
     public function initialize(): bool
     {
-        $this->classKey = self::NAMESPACE . $this->getProperty('class');
+        $className = str_replace(" ", "_", $this->getProperty('class'));
+
+        $this->classKey = self::NAMESPACE . $className;
 
         return parent::initialize();
     }

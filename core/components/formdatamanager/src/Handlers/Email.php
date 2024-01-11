@@ -22,16 +22,19 @@ class Email implements HandlerInterface
 
     public function run(xPDOSimpleObject $object): bool
     {
-        $chunk = $this->modx->getObject('modChunk',array('name' => 'templaterequest'));
-
         $formData = '<ul>';
 
         foreach ($object->toArray() as $item=>$value) {
+            if ($item === "status") continue;
             $formData .= "<li>$item: $value</li>";
         }
 
         $formData .= '</ul>';
-        $formData = $chunk->process(['data' => $formData]);
+        $chunk = $this->modx->getObject('modChunk',array('name' => 'email-template'));
+        if ($chunk) {
+            $formData = $chunk->process(['data' => $formData]);
+        }
+
         $sender = 'Max1mus1995.ms@gmail.com';
         $recipient = 'albertenshtain51@gmail.com';
 

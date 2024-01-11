@@ -30,6 +30,7 @@ class Telegram implements HandlerInterface
         $formData = '';
 
         foreach ($object->toArray() as $item=>$value) {
+            if ($item === "status") continue;
             $formData .= "$item: $value\n";
         }
 
@@ -45,7 +46,6 @@ class Telegram implements HandlerInterface
             curl_setopt($sh, CURLOPT_RETURNTRANSFER, true);
 
             $response = curl_exec($sh);
-            var_dump($response);
 
             if (!$response) {
                 $this->modx->log(xPDO::LOG_LEVEL_INFO, "\n\tОшибка подключения к телеграмм боту");

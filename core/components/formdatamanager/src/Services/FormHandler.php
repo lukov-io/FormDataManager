@@ -34,6 +34,7 @@ class FormHandler {
             return $this->failure('form does not exist');
         }
 
+        $formName = str_replace(' ', '_', $formName);
         $formData = [];
         $formFields = explode(',', $form->get("fields"));
 
@@ -51,6 +52,7 @@ class FormHandler {
 
     public function process(Forms $form) {
         $formName = $this->formName = $form->get('formName');
+        $formName = str_replace(' ', '_', $formName);
         $formRequests = $this->modx->getCollection(self::NAMESPACE . $formName, ["status" => 0]);
 
         if (empty($formRequests)) {

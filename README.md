@@ -27,6 +27,17 @@ How to use
   To configure the functionality of the telegram handler, you need a bot token and a chat to receive notifications.
   [learn more](https://core.telegram.org/bots/features#botfather)
 
-  To use Email you need setup SMTP on your site[learn more]()
 
-    
+  To use Email you need setup SMTP on your site[learn more](https://support.modx.com/hc/en-us/articles/216947987-Configure-MODX-to-Use-an-Email-Service-Provider)
+
+***
+4: Setup CronManager.
+-----------------------------------
+  [setup CronManager](https://jako.github.io/CronManager/usage/)
+  
+  Create new cronjob in CronManager. Choose send-undelivered-requests snippet. set checked time and set active.
+
+***
+4: Usage Manager.
+-----------------------------------
+  Send form to /assets/components/formdatamanager/request.php. method - POST. You should send field (name="className" value="name you created form")  

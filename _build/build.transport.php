@@ -54,11 +54,17 @@ $plugins = include $sources['data'].'transport.plugins.php';
 if (empty($plugin)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in plugin.');
 $category->addMany($plugins);*/
 
-/* add chunks */
-$modx->log(modX::LOG_LEVEL_INFO,'Packaging in chunks...');
+/* add snippets */
+$modx->log(modX::LOG_LEVEL_INFO,'Packaging in snippets...');
 $snippets = include $sources['data'].'transport.snippets.php';
 if (empty($snippets)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in snippets.');
 $category->addMany($snippets);
+
+/* add chunks */
+$modx->log(modX::LOG_LEVEL_INFO,'Packaging in chunks...');
+$chunks = include $sources['data'].'transport.chunks.php';
+if (empty($snippets)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in chunks.');
+$category->addMany($chunks);
 
 /* create category vehicle */
 $attr = array(
@@ -82,6 +88,11 @@ $attr = array(
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
+        'Chunks' => [
+            xPDOTransport::PRESERVE_KEYS => false,
+            xPDOTransport::UPDATE_OBJECT => true,
+            xPDOTransport::UNIQUE_KEY => 'name',
+        ],
     ),
 );
 $vehicle = $builder->createVehicle($category,$attr);

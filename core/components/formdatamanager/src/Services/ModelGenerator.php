@@ -45,7 +45,7 @@ class ModelGenerator
             return false;
         }
 
-        if(!preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", $class)) {
+        if(!preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_ \x80-\xff]*$/", $class)) {
             return false;
         }
 
@@ -63,6 +63,8 @@ class ModelGenerator
         ];
 
         $newModel->set('formName', $class);
+        $class = str_replace(" ", '_', $class);
+
         $extends = $generator->model['baseClass'];
         $generator->classes[$class] = ['extends' => $extends];
         $generator->map[$class] = [
