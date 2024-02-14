@@ -7,10 +7,9 @@ $xpdo_meta_map = array (
     array (
         'xPDO\\Om\\xPDOSimpleObject' => 
         array (
-            0 => 'FormDataManager\\Model\\weee_34fv',
+            0 => 'FormDataManager\\Model\\Forms',
             1 => 'FormDataManager\\Model\\Handlers',
-            2 => 'FormDataManager\\Model\\Forms',
-            3 => 'FormDataManager\\Model\\FormsHandlers',
+            2 => 'FormDataManager\\Model\\FormsHandlers',
         ),
     ),
 );

@@ -7,6 +7,9 @@ FormDataManager.window.CreateForm = function (config) {
         baseParams: {
             action: 'formslist/create'
         },
+        modal:true,
+        width: 600,
+        height: 700,
         fields: [
             {
                 xtype: 'textfield',
@@ -225,6 +228,9 @@ FormDataManager.window.CreateForm = function (config) {
 
         i.setActiveTab('formdatamanager-grid-' + form.formName);
         i.doLayout();
+    });
+    this.on('render', function (a) {
+        this.maximize();
     });
 };
 Ext.extend(FormDataManager.window.CreateForm, MODx.Window);

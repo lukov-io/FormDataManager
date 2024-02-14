@@ -64,31 +64,6 @@ class FormDataManager
         return $this->generator;
     }
 
-    public function test() {
-        $sh = curl_init('https://icslegal.com/regulatory-bodies-icslegal.php');
-        curl_setopt($sh, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($sh);
-        $document = new \DOMDocument();
-        $document->loadHTML($response);
-        $finder = new \DomXPath($document);
-        $classname="body-content ckEditor-content new-font";
-        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
-
-        $tmp_dom = new \DOMDocument();
-
-        foreach ($nodes as $node)
-        {
-            $tmp_dom->appendChild($tmp_dom->importNode($node,true));
-        }
-
-        $innerHTML = trim($tmp_dom->saveHTML());
-        echo $innerHTML;
-        echo "<pre>";
-        var_dump($nodes);
-        echo "</pre>";
-    }
-
     public function registerHandler(string $name, string $className): bool
     {
         if ($this->modx->getObject(Handlers::class, ['className'=>$className])) {
