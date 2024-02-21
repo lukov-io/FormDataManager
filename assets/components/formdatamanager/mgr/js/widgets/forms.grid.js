@@ -100,8 +100,22 @@ FormDataManager.grid.Forms = function(config) {
     FormDataManager.grid.Forms.superclass.constructor.call(this,config)
 };
 Ext.extend(FormDataManager.grid.Forms,FormDataManager.grid.FormDataManager,{
+    showForm: function (btn,e) {
+        let updateFormDataManagerWindow = MODx.load({
+            xtype: 'formdatamanager-window-formdatamanager-show',
+            data: this.menu.record,
+            closeAction: "close"
+        });
+
+        updateFormDataManagerWindow.show(e.target);
+    },
     getMenu: function() {
-        return [];
+        return [
+            {
+                text: _('formdatamanager.formdatamanager_update'),
+                handler: this.showForm
+            },
+        ];
     }
 });
 Ext.reg('formdatamanager-grid-forms',FormDataManager.grid.Forms);

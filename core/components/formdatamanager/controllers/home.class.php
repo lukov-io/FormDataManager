@@ -60,6 +60,7 @@ class FormDataManagerHomeManagerController extends modExtraManagerController
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/general.settings.panel.js');
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/tg.settings.panel.js');
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/formdatamanager.window.create.js');
+        $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/formdatamanager.window.showform.js');
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/formdatamanager.window.update.js');
         $this->addJavascript($this->formmanager->options['jsUrl'].'widgets/forms.grid.js');
         $this->addJavascript($this->formmanager->options['jsUrl'] . 'widgets/home.panel.js');
