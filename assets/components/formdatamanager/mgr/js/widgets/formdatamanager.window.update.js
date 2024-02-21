@@ -1,13 +1,14 @@
 FormDataManager.window.Update = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('formdatamanager.formdatamanager_update')
-        ,url: FormDataManager.config.connectorUrl
-        ,baseParams: {
+        title: _('formdatamanager.formdatamanager_update'),
+        url: FormDataManager.config.connectorUrl,
+        baseParams: {
             action: 'formslist/update',
             id: config.data.id
-        }
-        ,fields: this.getFormFields(config.data)
+        },
+        modal:true,
+        fields: this.getFormFields(config.data)
     });
     FormDataManager.window.Update.superclass.constructor.call(this,config);
 };

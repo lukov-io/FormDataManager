@@ -14,6 +14,9 @@ class FormCreateProcessor extends CreateProcessor
         $FormDataManager = $this->modx->formdatamanager;
         $generator = $FormDataManager->getGenerator();
         $object = $this->getProperty('form');
+        foreach ($object['fields'] as &$field) {
+            $field = str_replace(' ', '_', $field);
+        }
 
         $this->object = $generator->process($object);
 

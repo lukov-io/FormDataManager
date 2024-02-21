@@ -126,7 +126,7 @@ Ext.extend(FormDataManager.panel.Home, MODx.Panel, {
 
         for (let i of FormDataManager.config.classMap[className]) {
             output.push({
-                header: i,
+                header: i.replace('_',' '),
                 dataIndex: i,
                 sortable: true,
             });

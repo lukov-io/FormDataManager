@@ -39,6 +39,10 @@ class FormHandler {
         $formFields = explode(',', $form->get("fields"));
 
         foreach ($formFields as $field) {
+
+            if (is_array($_POST[$field])) {
+                $_POST[$field] = implode(',', $_POST[$field]);
+            }
             $formData[$field] = $_POST[$field];
         }
 

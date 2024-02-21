@@ -6,6 +6,7 @@ FormDataManager.grid.Forms = function(config) {
         ,fields: ['id']
         ,paging: true
         ,class: ""
+        ,disableContextMenuAction: true
         ,remoteSort: true
         ,columns: [{
             header: '№'
@@ -98,5 +99,9 @@ FormDataManager.grid.Forms = function(config) {
     });
     FormDataManager.grid.Forms.superclass.constructor.call(this,config)
 };
-Ext.extend(FormDataManager.grid.Forms,FormDataManager.grid.FormDataManager);
+Ext.extend(FormDataManager.grid.Forms,FormDataManager.grid.FormDataManager,{
+    getMenu: function() {
+        return [];
+    }
+});
 Ext.reg('formdatamanager-grid-forms',FormDataManager.grid.Forms);

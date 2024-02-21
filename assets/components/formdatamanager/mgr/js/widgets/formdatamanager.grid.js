@@ -123,16 +123,16 @@ Ext.extend(FormDataManager.grid.FormDataManager,MODx.grid.Grid,{
         });
     },
     getMenu: function() {
-    return [
-        {
-            text: _('formdatamanager.formdatamanager_update'),
-            handler: this.update
-        },
-        {
-            text: _('formdatamanager.formdatamanager_remove'),
-            handler: this.removeForm
-        }
-    ];
-}
+        return [
+            {
+                text: _('formdatamanager.formdatamanager_update'),
+                handler: this.update
+            },
+            {
+                text: _('formdatamanager.formdatamanager_remove'),
+                handler: this.removeForm
+            }
+        ];
+    }
 });
 Ext.reg('formdatamanager-grid-formdatamanager',FormDataManager.grid.FormDataManager);

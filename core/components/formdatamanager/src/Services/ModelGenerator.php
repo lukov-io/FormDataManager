@@ -77,7 +77,7 @@ class ModelGenerator
         ];
         $generator->map[$class]['fields'] = [
             'createdAt' => NULL,
-            'status' => NULL,
+            'status' => 0,
         ];
         $generator->map[$class]['fieldMeta'] = [
             'createdAt' => [
@@ -91,7 +91,7 @@ class ModelGenerator
                 'precision' => '1',
                 'phptype' => 'integer',
                 'null' => true,
-                'attributes' => 'DEFAULT \'0\'',
+                'default' => 0,
             ],
         ];
 
